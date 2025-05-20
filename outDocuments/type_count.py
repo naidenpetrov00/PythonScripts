@@ -34,3 +34,4 @@ for file_name in os.listdir(folder_path):
             write_counts(result, file_name.removesuffix('.ods'))
         except Exception as e:
             print(f"Error reading {file_path}")
+            print(e)
