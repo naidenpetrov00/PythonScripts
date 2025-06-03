@@ -12,6 +12,7 @@ def write_counts(result: defaultdict[any, defaultdict[any, int]], file_name: str
         sorted_items = sorted(inner_type.items(), key=lambda x: x[1],reverse=True)
         output[main_type] = dict(sorted_items)
     with open(f'results/{file_name}.txt', 'w') as f:
+        print(f"Writing in results/{file_name}.txt")
         f.write(f"                  Изходирани документи за {file_name}\n")
         for main_type, inner_dict in output.items():
             total_count = sum(inner_dict.values())
