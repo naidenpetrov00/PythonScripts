@@ -1,29 +1,36 @@
+from readData import readExcelFiles
 from PyPDF2 import PdfReader, PdfWriter
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from io import BytesIO
-from readData import readExcelFiles, caseNumberProp
+from PyPDF2.generic import NameObject, BooleanObject
+from typing import Any, List
 
-blank_path = "./blanks/243.pdf"
+
+from blankFieldProps import BlankFieldProps
+
+blank_path = "./blanks/243_formC.pdf"
 
 files = readExcelFiles()
 
+field_values = {
+    BlankFieldProps.RECEIVER_GENERAL_INFO: "Основна информация",
+    BlankFieldProps.ADDRESS: "ул. Иван Вазов 10",
+    BlankFieldProps.CITY: "София",
+    BlankFieldProps.SENDER: "Кантора ЧСИ",
+    BlankFieldProps.SENDER_ADDRESS: "бул. България 50",
+    BlankFieldProps.SENDER_CITY: "Пловдив",
+    "Test Required": "Test"
+}
+
 for file_df in files:
-    for index, row in file_df.iterrows():
-        packet = BytesIO()
-        c = canvas.Canvas(packet, pagesize=A4)
-        c.drawString(100, 100, str(row[caseNumberProp]))
+    # for index, row in file_df.iterrows():
+    blank = PdfReader(blank_path)
+    output_pdf = PdfWriter()
 
-        c.save()
-        packet.seek(0)
+    page = blank.pages[0]
+    output_pdf.add_page(blank.pages[0])
+    output_pdf.update_page_form_field_values(output_pdf.pages[0], field_values)
 
-        blank = PdfReader(blank_path)
-        overlay_pdf = PdfReader(packet)
-        output_pdf = PdfWriter()
+    fields = blank.get_form_text_fields()
+    print(fields)
 
-        page = blank.pages[0]
-        page.merge_page(overlay_pdf.pages[0])
-        output_pdf.add_page(page)
-
-        with open(f"notices/output{index}.pdf", "wb") as f:
-            output_pdf.write(f)
+    with open(f"notices/output{0}.pdf", "wb") as f:
+        output_pdf.write(f)
