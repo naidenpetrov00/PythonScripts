@@ -11,7 +11,7 @@ from blankFieldProps import BlankFieldProps
 blank_path = "./blanks/243_form.pdf"
 output_folder = "./notices"
 sender = "ЧСИ - Неделчо Митев рег.№ 841 тел.: 0700 20 841"
-sender_address = "1000 София бул. „Княз Александър Дондуков №: 11"
+sender_address = "1000 София бул.Княз Александър Дондуков №:11"
 sender_city = "София"
 date_prop = "Дата"
 
@@ -71,7 +71,7 @@ for file_df in files:
 
         updateTable(row)
 
-        output_path = f"{output_folder}/{row[readData.caseNumberProp]}_{index}.pdf"
+        output_path = f"{output_folder}/{index}_{row[readData.caseNumberProp]}.pdf"
 
         with open(output_path, "wb") as f:
             output_pdf.write(f)
