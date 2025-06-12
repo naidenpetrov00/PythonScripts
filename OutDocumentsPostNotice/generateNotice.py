@@ -1,4 +1,7 @@
+import datetime as date
+import os
 from pandas import Series
+import pandas as pd
 from readData import readExcelFiles
 from PyPDF2 import PdfReader, PdfWriter
 import readData
@@ -6,12 +9,18 @@ import readData
 from blankFieldProps import BlankFieldProps
 
 blank_path = "./blanks/243_form.pdf"
+output_folder = "./notices"
+sender = "ЧСИ - Неделчо Митев рег.№ 841 тел.: 0700 20 841"
+sender_address = "1000 София бул. „Княз Александър Дондуков №: 11"
+sender_city = "София"
+date_prop = "Дата"
 
 files = readExcelFiles()
-
-sender = "ЧСИ - Неделчо Митев рег.№ 841 тел.: 0700 20 841"
-sender_address = "1000 София БУЛ. Витоша N:17"
-sender_city = "София"
+results_df = pd.DataFrame(
+    columns=[readData.recieverProp, readData.adressProp, readData.sender, date_prop]
+)
+results_df.loc[1, readData.sender] = sender
+results_df.loc[1, date_prop] = date.datetime.today().strftime("%d.%m.%Y")
 
 
 def getFieldValues(row: Series):
@@ -26,6 +35,29 @@ def getFieldValues(row: Series):
     }
 
 
+table_path = "./blanks/table_blank.xlsx"
+
+pd.set_option("display.max_colwidth", 50)
+
+
+def updateTable(row: Series):
+    global results_df
+    results_df = pd.concat(
+        [
+            results_df,
+            pd.DataFrame(
+                [
+                    {
+                        readData.recieverProp: row[readData.recieverProp],
+                        readData.adressProp: row[readData.adressProp].split(";")[0],
+                    }
+                ]
+            ),
+        ],
+        ignore_index=True,
+    )
+
+
 for file_df in files:
     for index, row in file_df.iterrows():
         blank = PdfReader(blank_path)
@@ -37,7 +69,11 @@ for file_df in files:
             output_pdf.pages[0], getFieldValues(row)
         )
 
-        output_path = f"notices/output{index}.pdf"
+        updateTable(row)
+
+        output_path = f"{output_folder}/{row[readData.caseNumberProp]}_{index}.pdf"
 
         with open(output_path, "wb") as f:
             output_pdf.write(f)
+
+results_df.to_excel(f"{output_folder}/noticesTable.xlsx", index=False)

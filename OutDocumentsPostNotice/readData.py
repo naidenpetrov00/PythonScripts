@@ -8,6 +8,7 @@ documentNumber = "Докуемнт №"
 recieverProp = "Получател"
 adressProp = "Адрес"
 debtorName = "Към длъжник"
+sender = "Изпращач"
 
 
 def readExcelFiles() -> List[pd.DataFrame]:
