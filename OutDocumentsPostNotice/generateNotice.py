@@ -41,5 +41,3 @@ for file_df in files:
 
         with open(output_path, "wb") as f:
             output_pdf.write(f)
-
-        # printDocument(output_path)
