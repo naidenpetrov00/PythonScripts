@@ -4,8 +4,10 @@ from typing import List
 
 folder_path = "./documents"
 caseNumberProp = "Дело №"
+documentNumber = "Докуемнт №"
 recieverProp = "Получател"
 adressProp = "Адрес"
+debtorName = "Към длъжник"
 
 
 def readExcelFiles() -> List[pd.DataFrame]:
@@ -17,7 +19,17 @@ def readExcelFiles() -> List[pd.DataFrame]:
             data = pd.DataFrame
             try:
                 df = pd.read_excel(file_path)
-                result.append(df[[caseNumberProp, recieverProp, adressProp]])
+                result.append(
+                    df[
+                        [
+                            caseNumberProp,
+                            recieverProp,
+                            adressProp,
+                            documentNumber,
+                            debtorName,
+                        ]
+                    ]
+                )
             except Exception as e:
                 print(f"Error reading {file_path}")
                 print(e)

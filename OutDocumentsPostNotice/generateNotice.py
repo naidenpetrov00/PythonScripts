@@ -1,36 +1,45 @@
+from pandas import Series
 from readData import readExcelFiles
 from PyPDF2 import PdfReader, PdfWriter
-from PyPDF2.generic import NameObject, BooleanObject
-from typing import Any, List
-
+import readData
 
 from blankFieldProps import BlankFieldProps
 
-blank_path = "./blanks/243_formC.pdf"
+blank_path = "./blanks/243_form.pdf"
 
 files = readExcelFiles()
 
-field_values = {
-    BlankFieldProps.RECEIVER_GENERAL_INFO: "Основна информация",
-    BlankFieldProps.ADDRESS: "ул. Иван Вазов 10",
-    BlankFieldProps.CITY: "София",
-    BlankFieldProps.SENDER: "Кантора ЧСИ",
-    BlankFieldProps.SENDER_ADDRESS: "бул. България 50",
-    BlankFieldProps.SENDER_CITY: "Пловдив",
-    "Test Required": "Test"
-}
+sender = "ЧСИ - Неделчо Митев рег.№ 841 тел.: 0700 20 841"
+sender_address = "1000 София БУЛ. Витоша N:17"
+sender_city = "София"
+
+
+def getFieldValues(row: Series):
+    generalInfo = f"{row[readData.recieverProp]} \nУдостоверявам, че получих документ(и) с изх№: {row[readData.documentNumber]} ИД {row[readData.caseNumberProp]}"
+    return {
+        BlankFieldProps.RECEIVER_GENERAL_INFO: generalInfo,
+        BlankFieldProps.ADDRESS: row[readData.adressProp],
+        # BlankFieldProps.CITY: "София",
+        BlankFieldProps.SENDER: sender,
+        BlankFieldProps.SENDER_ADDRESS: sender_address,
+        BlankFieldProps.SENDER_CITY: sender_city,
+    }
+
 
 for file_df in files:
-    # for index, row in file_df.iterrows():
-    blank = PdfReader(blank_path)
-    output_pdf = PdfWriter()
+    for index, row in file_df.iterrows():
+        blank = PdfReader(blank_path)
+        output_pdf = PdfWriter()
 
-    page = blank.pages[0]
-    output_pdf.add_page(blank.pages[0])
-    output_pdf.update_page_form_field_values(output_pdf.pages[0], field_values)
+        page = blank.pages[0]
+        output_pdf.add_page(blank.pages[0])
+        output_pdf.update_page_form_field_values(
+            output_pdf.pages[0], getFieldValues(row)
+        )
 
-    fields = blank.get_form_text_fields()
-    print(fields)
+        output_path = f"notices/output{index}.pdf"
 
-    with open(f"notices/output{0}.pdf", "wb") as f:
-        output_pdf.write(f)
+        with open(output_path, "wb") as f:
+            output_pdf.write(f)
+
+        # printDocument(output_path)
