@@ -14,13 +14,15 @@ sender = "ЧСИ - Неделчо Митев рег.№ 841 тел.: 0700 20 841
 sender_address = "1000 София бул.Княз Александър Дондуков №:11"
 sender_city = "София"
 date_prop = "Дата"
+today_date = date.datetime.today().strftime("%d.%m.%Y")
+
 
 files = readExcelFiles()
 results_df = pd.DataFrame(
     columns=[readData.recieverProp, readData.adressProp, readData.sender, date_prop]
 )
 results_df.loc[1, readData.sender] = sender
-results_df.loc[1, date_prop] = date.datetime.today().strftime("%d.%m.%Y")
+results_df.loc[1, date_prop] = today_date
 
 
 def getFieldValues(row: Series):
@@ -76,4 +78,4 @@ for file_df in files:
         with open(output_path, "wb") as f:
             output_pdf.write(f)
 
-results_df.to_excel(f"{output_folder}/noticesTable.xlsx", index=False)
+results_df.to_excel(f"{output_folder}/noticesTable{today_date}.xlsx", index=False)
