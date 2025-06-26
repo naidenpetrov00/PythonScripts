@@ -34,6 +34,7 @@ results_df = pd.DataFrame(
         number,
         readData.sender,
         date_prop,
+        readData.outDate,
     ]
 )
 results_df.loc[1, readData.sender] = blank_fields.sender

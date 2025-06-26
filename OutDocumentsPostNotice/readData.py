@@ -5,6 +5,7 @@ from typing import List
 folder_path = "./documents"
 caseNumberProp = "Дело №"
 documentNumber = "Докуемнт №"
+outDate = "Изходиран"
 recieverProp = "Получател"
 adressProp = "Адрес"
 debtorName = "Към длъжник"
@@ -28,6 +29,7 @@ def readExcelFiles() -> List[pd.DataFrame]:
                             adressProp,
                             documentNumber,
                             debtorName,
+                            outDate,
                         ]
                     ]
                 )
