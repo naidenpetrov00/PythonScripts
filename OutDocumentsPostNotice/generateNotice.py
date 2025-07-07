@@ -63,6 +63,10 @@ prev_row_doc_number = None
 
 for file_df in files:
     for i, (index, row) in enumerate(file_df.iterrows()):
+        if pd.isna(row[readData.adressProp]):
+            print(f"{row[readData.caseNumberProp]} : {row[readData.documentNumber]}")
+            continue
+
         blank = PdfReader(blank_path)
         output_pdf = PdfWriter()
         page = blank.pages[0]
