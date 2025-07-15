@@ -29,6 +29,7 @@ number = "Товарителница"
 date_prop = "Дата"
 results_df = pd.DataFrame(
     columns=[
+        readData.documentNumber,
         readData.recieverProp,
         readData.adressProp,
         number,
@@ -49,6 +50,7 @@ def updateTable(row: Series):
             pd.DataFrame(
                 [
                     {
+                        readData.documentNumber: row[readData.documentNumber],
                         readData.recieverProp: row[readData.recieverProp],
                         readData.adressProp: row[readData.adressProp].split(";")[0],
                     }
