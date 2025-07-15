@@ -53,6 +53,7 @@ def updateTable(row: Series):
                         readData.documentNumber: row[readData.documentNumber],
                         readData.recieverProp: row[readData.recieverProp],
                         readData.adressProp: row[readData.adressProp].split(";")[0],
+                        readData.outDate: row[readData.outDate],
                     }
                 ]
             ),
