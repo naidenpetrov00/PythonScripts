@@ -15,7 +15,9 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-blank_path = "./blanks/243_form.pdf"
+# blank_path = "./blanks/243_form.pdf"
+blank_path = "./blanks/243_form_with_barcode_v3.pdf"
+
 output_folder = "./notices"
 
 today_date = date.datetime.today().strftime("%d.%m.%Y")
