@@ -18,11 +18,10 @@ class BlankFields:
         self.sender_address = "1000 София бул.Княз Александър Дондуков №:11"
         self.sender_city = "София"
 
-    def getFieldValues(self, row: Series, prev_row_doc_number=None):
+    def getFieldValues(self, row: Series, barcode: BarCode, prev_row_doc_number=None):
         current_doc = row[readData.documentNumber]
         out_date = row[readData.outDate].split("/")[-1]
         document_number = f"*{out_date}-{current_doc}*"
-        barcode = BarCode()
         print("------------ Barcode Info ------------")
         print("идентификатор на услугата: " + barcode.post_id)
         print("идентификатор на голям клиент: " + barcode.client_id)

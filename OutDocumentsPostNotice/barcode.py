@@ -61,3 +61,8 @@ class BarCode:
         return (
             f"*{self.post_id}{self.client_id}{self.unique_number}{self.control_number}*"
         )
+    
+    def get_barcode_text(self):
+        return (
+            f"{self.post_id}{self.client_id}{self.unique_number}{self.control_number}"
+        )
