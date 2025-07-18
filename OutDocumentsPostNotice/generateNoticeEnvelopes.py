@@ -84,7 +84,7 @@ for file_df in files:
         blank = PdfReader(blank_path)
         envelope = PdfReader(envelope_path)
         output_path = f"{output_folder}/{index}_{case_number}.pdf"
-        output_envelope_path = f"{envelope_output_folder}/{index}_{case_number}_envelop.pdf"
+        output_envelope_path = f"{envelope_output_folder}/{index}_{case_number}_envelope.pdf"
         output_pdf = PdfWriter()
         output_envelope_pdf = PdfWriter()
         output_pdf.add_page(blank.pages[0])
