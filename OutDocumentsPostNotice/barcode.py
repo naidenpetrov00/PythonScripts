@@ -46,7 +46,9 @@ class BarCode:
             else:
                 raise ValueError(f"Invalid character: {char}")
         remainder = result % 36
-        return remainder
+        alphabet = string.digits + string.ascii_uppercase
+        return alphabet[remainder]
+
 
     def _get_barcode_for_control_number(self):
         return f"{self.post_id}{self.client_id}{self.unique_number}"
