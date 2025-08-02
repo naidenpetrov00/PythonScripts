@@ -176,3 +176,4 @@ cython_debug/
 **/notices/
 **/envelopes/
 **/documents/
+**/config/
