@@ -10,7 +10,7 @@ class CameraSettings:
     password: str
 
 
-def load_settings(path="camera_config.json") -> CameraSettings:
+def load_settings(path="config/camera_config.json") -> CameraSettings:
     with open(path) as f:
         data = json.load(f)
     return CameraSettings(**data)
