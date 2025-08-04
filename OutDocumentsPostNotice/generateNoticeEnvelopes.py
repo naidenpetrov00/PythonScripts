@@ -1,7 +1,7 @@
 import datetime as date
 from pandas import Series
 import pandas as pd
-from utils import write_to_pdf
+from utils import log_the_last_number, write_to_pdf
 from barcode import BarCode
 from envelopeField import EnvelopeField
 from blankField import BlankFields
@@ -84,18 +84,19 @@ for file_df in files:
         blank = PdfReader(blank_path)
         envelope = PdfReader(envelope_path)
         output_path = f"{output_folder}/{index}_{case_number}.pdf"
-        output_envelope_path = f"{envelope_output_folder}/{index}_{case_number}_envelope.pdf"
+        output_envelope_path = (
+            f"{envelope_output_folder}/{index}_{case_number}_envelope.pdf"
+        )
         output_pdf = PdfWriter()
         output_envelope_pdf = PdfWriter()
         output_pdf.add_page(blank.pages[0])
         output_envelope_pdf.add_page(envelope.pages[0])
 
-        barcode = BarCode()
-
         if args.mode == "pair":
             if i % 2 == 0:
                 prev_row_doc_number = document_number
             else:
+                barcode = BarCode()
                 output_pdf.update_page_form_field_values(
                     output_pdf.pages[0],
                     blank_fields.getFieldValues(row, barcode, prev_row_doc_number),
@@ -111,6 +112,7 @@ for file_df in files:
                 write_to_pdf(output_envelope_pdf, output_envelope_path)
 
         elif args.mode == "single":
+            barcode = BarCode()
             output_pdf.update_page_form_field_values(
                 output_pdf.pages[0], blank_fields.getFieldValues(row, barcode)
             )
@@ -124,5 +126,5 @@ for file_df in files:
             write_to_pdf(output_pdf, output_path)
             write_to_pdf(output_envelope_pdf, output_envelope_path)
 
-
+log_the_last_number()
 results_df.to_excel(f"{output_folder}/noticesTable{today_date}.xlsx", index=False)

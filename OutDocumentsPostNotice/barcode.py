@@ -16,9 +16,9 @@ class BarCode:
         return result
 
     def _generate_unique_number(self):
-        filename = "last_number.txt"
-        if os.path.exists(filename):
-            with open(filename, "r") as f:
+        filepath = "./config/last_number.txt"
+        if os.path.exists(filepath):
+            with open(filepath, "r") as f:
                 last_number = int(f.read().strip())
         else:
             last_number = 0
@@ -26,7 +26,7 @@ class BarCode:
         new_number = last_number + 1
         unique_code = self._int_to_base36(new_number)
 
-        with open(filename, "w") as f:
+        with open(filepath, "w") as f:
             f.write(str(new_number))
 
         return str(unique_code)
